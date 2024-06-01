@@ -1,0 +1,9 @@
+.pattern {
+  position: absolute;
+  top: 0;
+  z-index: 0;
+}
+
+.pattern::selection {
+  background-color: initial;
+}

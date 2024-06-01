@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 /* RESET */
 *,
@@ -75,7 +75,7 @@ button {
 body {
   background-image: linear-gradient(200deg, #654a86, #534292);
   min-height: 100vh;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -86,14 +86,6 @@ body {
 .body::-webkit-scrollbar {
   /* Chrome, Safari, Edge, Opera, All browsers on iOS */
   display: none;
-}
-
-/* APP */
-.app {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  height: 850px;
 }
 
 /* CONTAINER */
@@ -119,16 +111,6 @@ header {
   transform: translateZ(0);
   box-shadow: rgba(12, 17, 21, 0.5) 0px 0px 50px;
   padding-bottom: 3px;
-}
-
-.pattern {
-  position: absolute;
-  top: 0;
-  z-index: 0;
-}
-
-.pattern::selection {
-  background-color: initial;
 }
 
 /* HEADINGS */
@@ -171,7 +153,9 @@ h1 *::selection {
   border-radius: 6px;
   overflow: hidden;
   position: relative;
-  transition: background-color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .form:hover,
@@ -490,71 +474,6 @@ form button span::selection {
   color: #6c6f76;
   font-size: 11px;
   margin-top: -1px;
-}
-
-/* HASHTAGS */
-.hashtags {
-  position: absolute;
-  right: -137px;
-  top: 0px;
-}
-
-.hashtags li {
-  max-width: max-content;
-  margin-bottom: 11px;
-}
-
-/* HASHTAG */
-.hashtags li button {
-  align-self: flex-start;
-  font-size: 13px;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.6);
-  padding: 7px 14px 9px;
-  background-color: rgba(255, 255, 255, 0.06);
-  border-radius: 500px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.hashtags li button:hover,
-.hashtags li button:focus {
-  color: #fff;
-  transform: scale(1.11);
-}
-
-.hashtags li button:active {
-  transform: scale(1.06);
-}
-
-.hashtags li button::selection {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* FOOTER */
-.footer {
-  position: absolute;
-  transform: rotate(-90deg);
-  left: -225px;
-  bottom: 174px;
-}
-
-/* COPYRIGHT */
-.footer > small {
-  color: #a6adb5;
-  font-size: 11px;
-}
-
-.footer > small *::selection {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.footer > small > p {
-  opacity: 0.4;
-}
-
-.footer > small > p > a {
-  text-decoration: underline;
 }
 
 /* SPINNER */

@@ -1,5 +1,20 @@
-import React from "react";
-
+import React from 'react';
+import './HashtagList.scss';
 export default function HashtagList() {
-  return <ul>HashtagList</ul>;
+  return (
+    <ul className="hashtags">
+      <li>
+        <button>btn1</button>
+      </li>
+      <li>
+        <button>btn1</button>
+      </li>
+      <li>
+        <button>btn1</button>
+      </li>
+      <li>
+        <button>btn1</button>
+      </li>
+    </ul>
+  );
 }

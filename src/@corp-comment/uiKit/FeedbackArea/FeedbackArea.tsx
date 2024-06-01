@@ -1,6 +1,5 @@
-import React from "react";
-import FeedbackHeader from "./components/FeedbackHeader/FeedbackHeader";
-import FeedbackList from "./components/FeedbackList/FeedbackList";
+import FeedbackHeader from './components/FeedbackHeader/FeedbackHeader';
+import FeedbackList from './components/FeedbackList/FeedbackList';
 
 export default function FeedbackArea() {
   return (

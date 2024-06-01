@@ -1,5 +1,11 @@
-import React from "react";
-
+import React from 'react';
+import './BackgroundPattern.scss';
 export default function BackgroundPattern() {
-  return <div>BackgroundPattern</div>;
+  return (
+    <img
+      src="/pattern.svg"
+      alt="pattern"
+      className="pattern"
+    />
+  );
 }

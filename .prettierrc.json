@@ -1,0 +1,17 @@
+{
+    "singleQuote": true,
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "printWidth": 90,
+    "jsxBracketSameLine": false,
+    "singleAttributePerLine": true,
+    "overrides": [
+        {
+            "files": "*.scss",
+            "options": {
+                "singleQuote": false
+            }
+        }
+    ],
+    "quoteProps": "preserve"
+}
