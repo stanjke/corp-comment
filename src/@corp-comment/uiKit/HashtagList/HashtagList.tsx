@@ -1,4 +1,3 @@
-import React from 'react';
 import './HashtagList.scss';
 export default function HashtagList() {
   return (

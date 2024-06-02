@@ -1,0 +1,11 @@
+.feedback-area {
+  width: 715px;
+  height: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  animation: intro 0.4s;
+
+  @media (max-width: 775px) {
+    width: 100vw;
+  }
+}

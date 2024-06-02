@@ -7,22 +7,34 @@
   transform: rotate(-90deg);
   left: -225px;
   bottom: 174px;
-}
 
-/* COPYRIGHT */
-.footer > small {
-  color: #a6adb5;
-  font-size: 11px;
-}
+  @media (max-width: 1050px) {
+    transform: initial;
+    position: relative;
+    left: initial;
+    bottom: initial;
+    text-align: center;
+    margin-top: 20px;
+  }
 
-.footer > small *::selection {
-  background-color: rgba(255, 255, 255, 0.1);
-}
+  @media (max-width: 525px) {
+    padding: 0 15px;
+  }
 
-.footer > small > p {
-  opacity: 0.4;
-}
+  & > small {
+    color: #a6adb5;
+    font-size: 11px;
 
-.footer > small > p > a {
-  text-decoration: underline;
+    & *::selection {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    & p {
+      opacity: 0.4;
+
+      & a {
+        text-decoration: underline;
+      }
+    }
+  }
 }

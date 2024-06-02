@@ -2,35 +2,38 @@
   position: absolute;
   right: -137px;
   top: 0px;
-}
 
-.hashtags li {
-  max-width: max-content;
-  margin-bottom: 11px;
-}
+  @media (max-width: 1050px) {
+    display: none;
+  }
 
-.hashtags li button {
-  align-self: flex-start;
-  font-size: 13px;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.6);
-  padding: 7px 14px 9px;
-  background-color: rgba(255, 255, 255, 0.06);
-  border-radius: 500px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
+  & li {
+    max-width: max-content;
+    margin-bottom: 11px;
 
-.hashtags li button:hover,
-.hashtags li button:focus {
-  color: #fff;
-  transform: scale(1.11);
-}
+    & button {
+      align-self: flex-start;
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.6);
+      padding: 7px 14px 9px;
+      background-color: rgba(255, 255, 255, 0.06);
+      border-radius: 500px;
+      cursor: pointer;
+      transition: all 0.2s;
 
-.hashtags li button:active {
-  transform: scale(1.06);
-}
+      &:hover,
+      &:focus {
+        color: #fff;
+        transform: scale(1.11);
+      }
+      &:active {
+        transform: scale(1.06);
+      }
 
-.hashtags li button::selection {
-  background-color: rgba(255, 255, 255, 0.1);
+      &::selection {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
 }
