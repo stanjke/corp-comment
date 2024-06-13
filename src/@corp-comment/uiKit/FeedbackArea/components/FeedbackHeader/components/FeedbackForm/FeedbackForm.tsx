@@ -1,5 +1,5 @@
 import { ChangeEvent, MouseEvent, useState } from 'react';
-import { MAX_CHARACTERS } from '@corp-comment/services/constatnts';
+import { MAX_CHARACTERS } from '@corp-comment/lib/constatnts';
 import { BUTTON_TEXT, LABEL_TEXT, TEXTAREA_ID } from './constatnts';
 import './FeedbackForm.scss';
 import { useNavigate } from 'react-router-dom';

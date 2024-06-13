@@ -1,13 +1,13 @@
 import TriangleUp from '@corp-comment/uiKit/Icons/TriangleUp';
 import './Feedback.scss';
+import { FeedbackType } from '@corp-comment/lib/types';
 
-type Props = {
-  upvoteCount: number;
-  companyName: string;
-  text: string;
-  daysAgo: number;
-};
-export default function Feedback({ upvoteCount, companyName, text, daysAgo }: Props) {
+export default function Feedback({
+  upvoteCount,
+  companyName,
+  text,
+  daysAgo,
+}: FeedbackType) {
   return (
     <li className="feedback">
       <button>
