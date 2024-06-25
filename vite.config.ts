@@ -7,6 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@corp-comment': '/src/@corp-comment',
+      'src': '/src',
     },
   },
 });
