@@ -18,7 +18,7 @@ export default function FeedbackList() {
     const getFeedbacks = async () => {
       try {
         const response = await fetch(
-          `${API_URL}${ENDPOINT.POSTS}${COMMENT_ENDPOINT.GET_COMMENT}`,
+          `${API_URL}${ENDPOINT.COMMENT}${COMMENT_ENDPOINT.GET_COMMENT}`,
         );
 
         if (!response.ok) {
@@ -26,6 +26,7 @@ export default function FeedbackList() {
         }
 
         const data = await response.json();
+        console.log('FEEDBACK DATA: ', data);
         setFeedbackItems(data);
         setIsLoaded(false);
         setErrorMessage('');
@@ -65,6 +66,8 @@ export default function FeedbackList() {
           upvoteCount={feedback.rating}
           text={feedback.content}
           daysAgo={feedbackBeenPosted(feedback.createdAt)}
+          author={feedback.author}
+          postId={feedback._id}
         />
       ))}
     </ol>

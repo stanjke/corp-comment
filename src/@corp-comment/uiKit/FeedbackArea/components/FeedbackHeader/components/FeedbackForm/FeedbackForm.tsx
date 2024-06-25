@@ -1,5 +1,11 @@
 import { ChangeEvent, MouseEvent, useState } from 'react';
-import { MAX_CHARACTERS } from '@corp-comment/lib/constatnts';
+import {
+  API_URL,
+  COMMENT_ENDPOINT,
+  ENDPOINT,
+  MAX_CHARACTERS,
+  USER_ENDPOINT,
+} from '@corp-comment/lib/constatnts';
 import { BUTTON_TEXT, LABEL_TEXT, TEXTAREA_ID } from './constatnts';
 import './FeedbackForm.scss';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +17,7 @@ import { removeHashtag } from '@corp-comment/lib/removeHashtag';
 export default function FeedbackForm() {
   const [text, setText] = useState('');
   const navigate = useNavigate();
-  const { token, addToken } = useStore();
+  const { token, addToken, addUserId } = useStore();
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const newText = event.target.value;
@@ -38,8 +44,6 @@ export default function FeedbackForm() {
       return toast('❌ Please enter a valid company name!', { autoClose: 2000 });
     }
 
-    console.log('REMOVE HASHTAG: ', removeHashtag(companyName[0]));
-
     const comment = {
       content: text,
       companyName: removeHashtag(companyName[0]),
@@ -52,14 +56,17 @@ export default function FeedbackForm() {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/comment/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token,
+      const response = await fetch(
+        `${API_URL}${ENDPOINT.COMMENT}${COMMENT_ENDPOINT.CREATE_COOMENT}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token,
+          },
+          body: JSON.stringify(comment),
         },
-        body: JSON.stringify(comment),
-      });
+      );
       const data = await response.json();
       console.log('COMMENT DATA: ', data);
     } catch (error) {
@@ -71,7 +78,7 @@ export default function FeedbackForm() {
     e.preventDefault();
     const obj = { loginOrEmail: 'stan', password: 'blabla' };
     try {
-      const response = await fetch('http://localhost:3000/api/user/login', {
+      const response = await fetch(`${API_URL}${ENDPOINT.USER}${USER_ENDPOINT.LOGIN}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,12 +86,14 @@ export default function FeedbackForm() {
         body: JSON.stringify(obj),
       });
 
-      const { token } = await response.json();
+      const data = await response.json();
 
-      if (token) {
-        addToken(token);
+      if (data.token) {
+        addToken(data.token);
+        addUserId(data.userId);
       }
-      console.log('LOGIN DATA: ', token);
+
+      console.log('LOGIN DATA: ', data);
     } catch (error) {
       console.log(error);
     }
@@ -95,14 +104,20 @@ export default function FeedbackForm() {
     const response = await fetch('http://localhost:3000/api/user/user', {
       method: 'GET',
       headers: {
-        'Authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2N2E5YTBjMjkzZjcxNjQxZTliMzNlYSIsImxvZ2luIjoic3RhbiIsImlhdCI6MTcxOTMxMDg3NiwiZXhwIjoxNzE5NjcwODc2fQ.5y7hO6zKeCTlC4alzIhDmSFVDSzq5xXenatSa5MVgPQ',
+        'Authorization': token,
       },
     });
 
     const user = await response.json();
     console.log(user);
   };
+
+  const handleLogout = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    addToken('');
+    addUserId('');
+  };
+
   return (
     <form className="form">
       <textarea
@@ -123,6 +138,9 @@ export default function FeedbackForm() {
         </button>
         <button onClick={handleLogin}>
           <span>{'Login'}</span>
+        </button>
+        <button onClick={handleLogout}>
+          <span>{'Logout'}</span>
         </button>
         <button
           onClick={(e) => {

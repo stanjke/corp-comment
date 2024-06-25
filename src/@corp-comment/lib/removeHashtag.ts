@@ -1,1 +1,1 @@
-export const removeHashtag = (text: string) => text.split('#').join('');
+export const removeHashtag = (text: string): string => text.split('#').join('');
