@@ -4,6 +4,9 @@ import { BUTTON_TEXT, LABEL_TEXT, TEXTAREA_ID } from './constatnts';
 import './FeedbackForm.scss';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from 'src/app/store';
+import { toast } from 'react-toastify';
+import { extractHashtag } from '@corp-comment/lib/extractHashtag';
+import { removeHashtag } from '@corp-comment/lib/removeHashtag';
 
 export default function FeedbackForm() {
   const [text, setText] = useState('');
@@ -14,6 +17,53 @@ export default function FeedbackForm() {
     const newText = event.target.value;
     if (newText.length < MAX_CHARACTERS) {
       setText(newText);
+    }
+  };
+
+  const handleSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    // check if text has at least one character
+    // check if text includes #
+    // prepare data for the request
+    // send request
+
+    if (text.length === 0) {
+      return toast('❌ Please enter your comment first!', { autoClose: 2000 });
+    }
+
+    const companyName = extractHashtag(text);
+
+    if (!companyName) {
+      return toast('❌ Please enter a valid company name!', { autoClose: 2000 });
+    }
+
+    console.log('REMOVE HASHTAG: ', removeHashtag(companyName[0]));
+
+    const comment = {
+      content: text,
+      companyName: removeHashtag(companyName[0]),
+      createdAt: Date.now(),
+      rating: 0,
+    };
+
+    if (!token) {
+      return toast('❌ Please login first!', { autoClose: 2000 });
+    }
+
+    try {
+      const response = await fetch('http://localhost:3000/api/comment/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token,
+        },
+        body: JSON.stringify(comment),
+      });
+      const data = await response.json();
+      console.log('COMMENT DATA: ', data);
+    } catch (error) {
+      console.log('ERROR: ', error);
     }
   };
 
@@ -65,7 +115,7 @@ export default function FeedbackForm() {
       <label htmlFor={TEXTAREA_ID}>{LABEL_TEXT}</label>
       <div>
         <p className="u-italic">{MAX_CHARACTERS - text.length}</p>
-        <button>
+        <button onClick={handleSubmit}>
           <span>{BUTTON_TEXT}</span>
         </button>
         <button onClick={handleAuth}>
