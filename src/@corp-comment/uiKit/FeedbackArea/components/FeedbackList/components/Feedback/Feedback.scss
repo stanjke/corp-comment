@@ -149,6 +149,15 @@
       }
     }
 
+    &.rated {
+      background-color: #f3f6f8;
+
+      & svg,
+      & span {
+        color: #784a86;
+      }
+    }
+
     &:disabled {
       pointer-events: none;
 

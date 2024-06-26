@@ -11,6 +11,8 @@ export enum COMMENT_ENDPOINT {
   GET_COMMENT = '/',
   CREATE_COOMENT = '/create',
   DELETE_COMMENT = '/delete',
+  UPVOTE_COMMENT = '/upvote',
+  DOWNVOTE_COMMENT = '/downvote',
 }
 
 export enum USER_ENDPOINT {

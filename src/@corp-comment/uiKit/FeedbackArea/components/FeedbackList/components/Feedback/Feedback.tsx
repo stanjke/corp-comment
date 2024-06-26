@@ -1,10 +1,22 @@
 import TriangleUp from '@corp-comment/uiKit/Icons/TriangleUp';
 import './Feedback.scss';
-import { FeedbackType } from '@corp-comment/lib/types';
-import { useStore } from 'src/app/store';
+import { useRootStore } from 'src/app/store';
 import { MouseEvent } from 'react';
-import { API_URL, COMMENT_ENDPOINT, ENDPOINT } from '@corp-comment/lib/constatnts';
-import { toast } from 'react-toastify';
+
+export type Props = {
+  upvoteCount: number;
+  companyName: string;
+  text: string;
+  daysAgo: number;
+  author: {
+    _id: string;
+    login: string;
+  };
+  onUpvoteComment: () => void;
+  onDownvoteComment: () => void;
+  onDeleteComment: () => void;
+  ratedBy: string[];
+};
 
 export default function Feedback({
   upvoteCount,
@@ -12,41 +24,24 @@ export default function Feedback({
   text,
   daysAgo,
   author,
-  postId,
-}: FeedbackType) {
-  const { userId, token } = useStore();
+  onUpvoteComment,
+  onDownvoteComment,
+  onDeleteComment,
+  ratedBy,
+}: Props) {
+  const userId = useRootStore((state) => state.userId);
 
-  const hanndleDeleteComment = async (event: MouseEvent<HTMLButtonElement>) => {
-    // send request to delete comment
-    event.preventDefault();
-
-    const obj = {
-      postId,
-      userId,
-    };
-    try {
-      const response = await fetch(
-        `${API_URL}${ENDPOINT.COMMENT}${COMMENT_ENDPOINT.DELETE_COMMENT}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token,
-          },
-          body: JSON.stringify(obj),
-        },
-      );
-      const data = await response.json();
-
-      toast('✅ Comment deleted successfully', { autoClose: 2000 });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const isRated = ratedBy.includes(userId);
 
   return (
     <li className="feedback">
-      <button>
+      <button
+        className={isRated ? 'rated' : ''}
+        onClick={(e: MouseEvent<HTMLButtonElement>) => {
+          e.preventDefault();
+          isRated ? onDownvoteComment() : onUpvoteComment();
+        }}
+      >
         <TriangleUp />
         <span>{upvoteCount}</span>
       </button>
@@ -58,7 +53,16 @@ export default function Feedback({
         <p>{text} </p>
       </div>
       <p>{`${daysAgo}d`}</p>
-      {userId === author._id && <button onClick={hanndleDeleteComment}>❌</button>}
+      {userId === author._id && (
+        <button
+          onClick={(e: MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault();
+            onDeleteComment();
+          }}
+        >
+          ❌
+        </button>
+      )}
     </li>
   );
 }

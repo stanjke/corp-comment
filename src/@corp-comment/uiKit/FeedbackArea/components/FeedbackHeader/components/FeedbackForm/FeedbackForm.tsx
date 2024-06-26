@@ -9,7 +9,7 @@ import {
 import { BUTTON_TEXT, LABEL_TEXT, TEXTAREA_ID } from './constatnts';
 import './FeedbackForm.scss';
 import { useNavigate } from 'react-router-dom';
-import { useStore } from 'src/app/store';
+import { useRootStore } from 'src/app/store';
 import { toast } from 'react-toastify';
 import { extractHashtag } from '@corp-comment/lib/extractHashtag';
 import { removeHashtag } from '@corp-comment/lib/removeHashtag';
@@ -17,7 +17,7 @@ import { removeHashtag } from '@corp-comment/lib/removeHashtag';
 export default function FeedbackForm() {
   const [text, setText] = useState('');
   const navigate = useNavigate();
-  const { token, addToken, addUserId } = useStore();
+  const { token, addToken, addUserId } = useRootStore();
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const newText = event.target.value;
@@ -28,11 +28,6 @@ export default function FeedbackForm() {
 
   const handleSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-
-    // check if text has at least one character
-    // check if text includes #
-    // prepare data for the request
-    // send request
 
     if (text.length === 0) {
       return toast('❌ Please enter your comment first!', { autoClose: 2000 });
@@ -67,8 +62,11 @@ export default function FeedbackForm() {
           body: JSON.stringify(comment),
         },
       );
+
+      if (!response.ok) return;
+
       const data = await response.json();
-      console.log('COMMENT DATA: ', data);
+      toast(`✅ ${data.message}`, { autoClose: 2000 });
     } catch (error) {
       console.log('ERROR: ', error);
     }
@@ -92,8 +90,6 @@ export default function FeedbackForm() {
         addToken(data.token);
         addUserId(data.userId);
       }
-
-      console.log('LOGIN DATA: ', data);
     } catch (error) {
       console.log(error);
     }

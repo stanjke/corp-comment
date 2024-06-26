@@ -1,15 +1,10 @@
 import { create } from 'zustand';
+import { LoadingSliceType, createLoadingSlice } from './slices/loadingSlice';
+import { UserSliceType, createUserSlice } from './slices/userSlice';
 
-type Store = {
-  token: string;
-  userId: string;
-  addToken: (newToken: string) => void;
-  addUserId: (userId: string) => void;
-};
+type Store = LoadingSliceType & UserSliceType;
 
-export const useStore = create<Store>((set) => ({
-  token: '',
-  userId: '',
-  addToken: (newToken: string) => set(() => ({ token: newToken })),
-  addUserId: (userId: string) => set(() => ({ userId })),
+export const useRootStore = create<Store>()((...a) => ({
+  ...createLoadingSlice(...a),
+  ...createUserSlice(...a),
 }));
