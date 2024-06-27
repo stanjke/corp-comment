@@ -11,6 +11,8 @@ export const useFeedbackList = () => {
   const [updatedFeedback, setUpdatedFeedback] = useState(true);
 
   const token = useRootStore((state) => state.token);
+  const isUpdating = useRootStore((state) => state.isUpdating);
+  const toggleIsUpdating = useRootStore((state) => state.toggleIsUpdating);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -29,14 +31,13 @@ export const useFeedbackList = () => {
         setFeedbackItems(data);
         setIsLoaded(false);
         setErrorMessage('');
-        toast('✅ Feedbacks loaded successfully', { autoClose: 2000 });
       } catch (error: any) {
         setErrorMessage(error.message);
         setIsLoaded(false);
       }
     };
     getFeedbacks();
-  }, [updatedFeedback]);
+  }, [isUpdating]);
 
   const handleDeleteComment = async (postId: string, userId: string) => {
     const obj = {
@@ -62,7 +63,7 @@ export const useFeedbackList = () => {
       const data = await response.json();
 
       toast('✅ Comment deleted successfully', { autoClose: 2000 });
-      setUpdatedFeedback((prev) => !prev);
+      toggleIsUpdating();
     } catch (error) {
       console.warn(error);
     }
@@ -94,7 +95,7 @@ export const useFeedbackList = () => {
       if (response.ok) {
         const { message } = await response.json();
         toast(`✅ ${message}`, { autoClose: 2000 });
-        setUpdatedFeedback((prev) => !prev);
+        toggleIsUpdating();
       }
     } catch (error: any) {
       console.warn(error.message);
@@ -127,7 +128,7 @@ export const useFeedbackList = () => {
       if (response.ok) {
         const { message } = await response.json();
         toast(`✅ ${message}`, { autoClose: 2000 });
-        setUpdatedFeedback((prev) => !prev);
+        toggleIsUpdating();
       }
     } catch (error: any) {
       console.warn(error.message);
