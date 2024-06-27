@@ -1,11 +1,12 @@
 import { StateCreator } from 'zustand';
 
 export type LoadingSliceType = {
-  isUpdating: boolean;
-  toggleIsUpdating: () => void;
+  isLoading: boolean;
+  setIsLoading: (status: boolean) => void;
 };
 
 export const createLoadingSlice: StateCreator<LoadingSliceType> = (set) => ({
-  isUpdating: false,
-  toggleIsUpdating: () => set((state) => ({ isUpdating: !state.isUpdating })),
+  isLoading: false,
+
+  setIsLoading: (status) => set(() => ({ isLoading: status })),
 });

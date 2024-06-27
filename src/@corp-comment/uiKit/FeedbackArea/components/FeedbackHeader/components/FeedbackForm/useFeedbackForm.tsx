@@ -1,13 +1,20 @@
-import { API_URL, COMMENT_ENDPOINT, ENDPOINT } from '@corp-comment/lib/constatnts';
+import {
+  API_URL,
+  COMMENT_ENDPOINT,
+  ENDPOINT,
+  MAX_CHARACTERS,
+  USER_ENDPOINT,
+} from '@corp-comment/lib/constatnts';
 import { extractHashtag } from '@corp-comment/lib/extractHashtag';
 import { removeHashtag } from '@corp-comment/lib/removeHashtag';
-import { MouseEvent, useState } from 'react';
+import { ChangeEvent, MouseEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRootStore } from 'src/app/store';
 
 export const useFeedbackForm = () => {
   const [text, setText] = useState('');
-  const { token, addToken, addUserId, toggleIsUpdating } = useRootStore();
+  const { token, addToken, addUserId, companies, setIsLoading, toggleIsUpdating } =
+    useRootStore();
 
   const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const newText = event.target.value;
@@ -99,5 +106,24 @@ export const useFeedbackForm = () => {
     console.log(user);
   };
 
-  return { handleInputChange, handleSubmit, text, handleLogin, handleAuth };
+  const handleLogout = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    addToken('');
+    addUserId('');
+  };
+
+  const handleTest = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log(companies);
+  };
+
+  return {
+    handleInputChange,
+    handleSubmit,
+    text,
+    handleLogin,
+    handleAuth,
+    handleLogout,
+    handleTest,
+  };
 };

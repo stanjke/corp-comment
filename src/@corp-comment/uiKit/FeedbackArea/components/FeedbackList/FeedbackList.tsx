@@ -5,38 +5,25 @@ import Spinner from '@corp-comment/uiKit/Spinner/Spinner';
 import ErrorMessage from '@corp-comment/uiKit/ErrorMessage/ErrorMessage';
 import { useFeedbackList } from './useFeedbackList';
 import { FeedbackType } from '@corp-comment/lib/types';
+import { useRootStore } from 'src/app/store';
 
 export default function FeedbackList() {
   const {
-    isLoaded,
+    isLoading,
+    filteredFeedbacks,
     errorMessage,
-    feedbackItems,
     handleDeleteComment,
     handleUpvoteComment,
     handleDownvoteComment,
   } = useFeedbackList();
 
-  // const handleAddFeedback = (text: string): void => {
-  //   const companyName = text
-  //     .split(' ')
-  //     .find((word: string) => word.includes('#'))!
-  //     .substring(1);
-
-  //   const newFeedback: FeedbackType = {
-  //     upvoteCount: 0,
-  //     companyName,
-  //     text,
-  //     daysAgo: Date.now(),
-  //   };
-
-  //   setFeedbackItems((prev) => [...prev, newFeedback]);
-  // };
+  console.log(isLoading);
 
   return (
     <ol className="feedback-list">
-      {isLoaded && <Spinner />}
+      {isLoading && <Spinner />}
       {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
-      {feedbackItems
+      {filteredFeedbacks
         ?.sort((a, b) => b.rating - a.rating)
         .map((feedback: FeedbackType) => (
           <Feedback

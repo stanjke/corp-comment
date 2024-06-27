@@ -1,43 +1,51 @@
 import { API_URL, COMMENT_ENDPOINT, ENDPOINT } from '@corp-comment/lib/constatnts';
+import { extractCompaniesWithHashtag } from '@corp-comment/lib/extractCompaniesWithHashtag';
 import { FeedbackType } from '@corp-comment/lib/types';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRootStore } from 'src/app/store';
 
 export const useFeedbackList = () => {
-  const [feedbackItems, setFeedbackItems] = useState<FeedbackType[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [updatedFeedback, setUpdatedFeedback] = useState(true);
-
   const token = useRootStore((state) => state.token);
+  const addCompanies = useRootStore((state) => state.addCompanies);
+  const updateFeedbacks = useRootStore((state) => state.updateFeedbacks);
   const isUpdating = useRootStore((state) => state.isUpdating);
   const toggleIsUpdating = useRootStore((state) => state.toggleIsUpdating);
+  const setIsLoading = useRootStore((state) => state.setIsLoading);
+  const feedbacks = useRootStore((state) => state.feedbacks);
+  const isLoading = useRootStore((state) => state.isLoading);
+  const selectedCompany = useRootStore((state) => state.selectedCompany);
 
   useEffect(() => {
-    setIsLoaded(true);
+    setIsLoading(true);
     const getFeedbacks = async () => {
       try {
         const response = await fetch(
           `${API_URL}${ENDPOINT.COMMENT}${COMMENT_ENDPOINT.GET_COMMENT}`,
         );
-
         if (!response.ok) {
           throw new Error('Something went wrong');
         }
-
         const data = await response.json();
-
-        setFeedbackItems(data);
-        setIsLoaded(false);
+        console.log();
+        updateFeedbacks(data);
+        addCompanies([...new Set(extractCompaniesWithHashtag(data))]);
         setErrorMessage('');
+        setIsLoading(false);
       } catch (error: any) {
+        setIsLoading(false);
         setErrorMessage(error.message);
-        setIsLoaded(false);
       }
     };
     getFeedbacks();
   }, [isUpdating]);
+
+  const filteredFeedbacks = selectedCompany
+    ? feedbacks.filter(
+        (feedback: FeedbackType) => feedback.companyName === selectedCompany,
+      )
+    : feedbacks;
 
   const handleDeleteComment = async (postId: string, userId: string) => {
     const obj = {
@@ -60,10 +68,8 @@ export const useFeedbackList = () => {
 
       if (!response.ok) throw new Error();
 
-      const data = await response.json();
-
-      toast('✅ Comment deleted successfully', { autoClose: 2000 });
       toggleIsUpdating();
+      toast('✅ Comment deleted successfully', { autoClose: 2000 });
     } catch (error) {
       console.warn(error);
     }
@@ -136,11 +142,11 @@ export const useFeedbackList = () => {
   };
 
   return {
-    isLoaded,
     errorMessage,
-    feedbackItems,
     handleDeleteComment,
     handleUpvoteComment,
     handleDownvoteComment,
+    filteredFeedbacks,
+    isLoading,
   };
 };

@@ -7,7 +7,8 @@ import { useFeedbackForm } from './useFeedbackForm';
 export default function FeedbackForm() {
   const navigate = useNavigate();
 
-  const { text, handleInputChange, handleSubmit } = useFeedbackForm();
+  const { text, handleInputChange, handleSubmit, handleTest, handleLogin } =
+    useFeedbackForm();
 
   return (
     <form className="form">
@@ -23,6 +24,12 @@ export default function FeedbackForm() {
         <p className="u-italic">{MAX_CHARACTERS - text.length}</p>
         <button onClick={handleSubmit}>
           <span>{BUTTON_TEXT}</span>
+        </button>
+        <button onClick={handleTest}>
+          <span>TEST</span>
+        </button>
+        <button onClick={handleLogin}>
+          <span>Login</span>
         </button>
       </div>
     </form>
